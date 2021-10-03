@@ -1,0 +1,49 @@
+{
+  "page_size": {
+    "height": 800,
+    "width": 500
+  },
+  "margin": {
+    "top": 40,
+    "bottom": 40,
+    "left": 40,
+    "right": 40
+  },
+  "elements": {
+    "paragraph": {
+      "prefix": "",
+      "font_file": "c:\\Windows\\Fonts\\arial.ttf",
+      "font_size": 10.0
+    },
+    "header1": {
+      "prefix": "# ",
+      "font_file": "c:\\Windows\\Fonts\\arialbd.ttf",
+      "font_size": 30.0
+    },
+    "header2": {
+      "prefix": "## ",
+      "font_file": "c:\\Windows\\Fonts\\arialbd.ttf",
+      "font_size": 26.0
+    },
+    "header3": {
+      "prefix": "### ",
+      "font_file": "c:\\Windows\\Fonts\\arialbd.ttf",
+      "font_size": 24.0
+    },
+    "header4": {
+      "prefix": "#### ",
+      "font_file": "c:\\Windows\\Fonts\\arialbd.ttf",
+      "font_size": 20.0
+    },
+    "header5": {
+      "prefix": "##### ",
+      "font_file": "c:\\Windows\\Fonts\\arialbi.ttf",
+      "font_size": 16.0
+    },
+    "header6": {
+      "prefix": "###### ",
+      "font_file": "c:\\Windows\\Fonts\\arialbi.ttf",
+      "font_size": 14.0
+    }
+  }
+}
