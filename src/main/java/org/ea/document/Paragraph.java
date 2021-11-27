@@ -1,35 +1,38 @@
 package org.ea.document;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
 import org.json.simple.JSONObject;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Paragraph {
-    public static final double LINE_SPACING = 1.2f;
+    public static final double LINE_SPACING = 1.5f;
 
-    protected long width;
+    protected double width;
     protected long marginLeft;
     protected long marginRight;
-    protected long textHeight;
     protected PDType0Font font;
     protected double fontSize;
-    private String content;
-    private List<String> renderedContentLines = new ArrayList<>();
+    protected String content;
+    protected List<String> renderedContentLines = null;
 
-    public Paragraph(PDDocument doc, String line, JSONObject config) throws IOException {
+    public Paragraph(PDDocument doc, String line, JSONObject config) {
         content = line;
         JSONObject pageSize = (JSONObject) config.get("page_size");
-        width = (Long)pageSize.get("width");
+        width = (Double)pageSize.get("width");
 
         JSONObject margins = (JSONObject) config.get("margin");
         marginLeft = (Long)margins.get("left");
         marginRight = (Long)margins.get("right");
+    }
 
+    public void init(PDDocument doc, JSONObject config) throws IOException {
         JSONObject element = this.getElement((JSONObject)config.get("elements"));
         String fontFile = (String)element.get("font_file");
         fontSize = (double)element.get("font_size");
@@ -41,7 +44,20 @@ public class Paragraph {
     }
 
     public static Paragraph createParagraph(PDDocument doc, String line, JSONObject config) throws IOException {
-        return new Paragraph(doc, line, config);
+        Paragraph p = null;
+        if (Heading.is(line)) {
+            p = new Heading(doc, line, config);
+        } else if (BulletedList.is(line)) {
+            p = new BulletedList(doc, line, config);
+        } else if (NumberedList.is(line)) {
+            p = new NumberedList(doc, line, config);
+        } else if (HorizontalRuler.is(line)) {
+            p = new HorizontalRuler(doc, line, config);
+        } else {
+            p = new Paragraph(doc, line, config);
+        }
+        p.init(doc, config);
+        return p;
     }
 
     protected double widthOfText(String text) throws IOException {
@@ -49,10 +65,11 @@ public class Paragraph {
     }
 
     protected void renderContent() throws IOException {
+        renderedContentLines = new ArrayList<>();
         double availableSpace = width - marginRight - marginLeft;
         String renderedContent = "";
         for (String s : content.split(" ")) {
-            double renderedSize = widthOfText(renderedContent);
+            double renderedSize = widthOfText(renderedContent + " " + s);
             if (renderedSize > availableSpace) {
                 renderedContentLines.add(renderedContent);
                 renderedContent = "";
@@ -70,7 +87,7 @@ public class Paragraph {
 
     public double calculateHeight() throws IOException {
         renderContent();
-        return renderedContentLines.size() * fontSize * LINE_SPACING;
+        return (renderedContentLines.size() + 0.3f) * fontSize * LINE_SPACING;
     }
 
     public String toString() {
@@ -86,5 +103,25 @@ public class Paragraph {
 
     public void addContent(String line) {
         content += " " + line;
+    }
+
+    public double render(PDPageContentStream contentStream, double yPos, boolean pageStart) throws IOException {
+        contentStream.setFont(font, (float)fontSize);
+
+        if (!pageStart) {
+            yPos -= (fontSize / 2) * LINE_SPACING;
+        }
+
+        boolean first = true;
+        for (String s : renderedContentLines) {
+            yPos -= first ? fontSize : fontSize * LINE_SPACING;
+            first = false;
+            contentStream.beginText();
+            contentStream.newLineAtOffset(marginLeft, (float) yPos);
+            contentStream.showText(s);
+            contentStream.endText();
+        }
+
+        return yPos;
     }
 }

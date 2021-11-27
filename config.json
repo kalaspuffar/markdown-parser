@@ -1,7 +1,7 @@
 {
   "page_size": {
-    "height": 800,
-    "width": 500
+    "height": 841.8898,
+    "width": 595.27563
   },
   "margin": {
     "top": 40,
@@ -11,39 +11,36 @@
   },
   "elements": {
     "paragraph": {
-      "prefix": "",
       "font_file": "c:\\Windows\\Fonts\\arial.ttf",
       "font_size": 10.0
     },
     "header1": {
-      "prefix": "# ",
       "font_file": "c:\\Windows\\Fonts\\arialbd.ttf",
-      "font_size": 30.0
+      "font_size": 28.0
     },
     "header2": {
-      "prefix": "## ",
       "font_file": "c:\\Windows\\Fonts\\arialbd.ttf",
-      "font_size": 26.0
+      "font_size": 22.0
     },
     "header3": {
-      "prefix": "### ",
       "font_file": "c:\\Windows\\Fonts\\arialbd.ttf",
-      "font_size": 24.0
+      "font_size": 18.0
     },
     "header4": {
-      "prefix": "#### ",
       "font_file": "c:\\Windows\\Fonts\\arialbd.ttf",
-      "font_size": 20.0
+      "font_size": 14.0
     },
     "header5": {
-      "prefix": "##### ",
       "font_file": "c:\\Windows\\Fonts\\arialbi.ttf",
-      "font_size": 16.0
+      "font_size": 12.0
     },
     "header6": {
-      "prefix": "###### ",
       "font_file": "c:\\Windows\\Fonts\\arialbi.ttf",
-      "font_size": 14.0
+      "font_size": 10.0
+    },
+    "code": {
+      "font_file": "c:\\Windows\\Fonts\\consola.ttf",
+      "font_size": 10.0
     }
   }
 }
